@@ -6,6 +6,7 @@ This repository holds a working version of scripts and data for calculation of 3
 - data/
   - ALHIC2302/ - _3D ECM Data from ALHIC2302 Core_
   - ALHIC2201/ - _3D ECM Data from ALHIC2201 Core_
+  - metadata.csv - _csv file containing metadata for all data files. This is helpful when reading in data (used in scripts)_
 - scripts/
   - basic plots/ - simple figures for ALHIC2302 and ALHIC2201
   - core_scripts/ - basic scripts used in others. Includes definition of ECM class
@@ -14,4 +15,4 @@ This repository holds a working version of scripts and data for calculation of 3
 - README.md - this file, describes contents and use
 
 ## Use
-The scripts in this repository are all written in python. The packages needed in the conda environment are included in the environment .yml file.
+The scripts in this repository are all written in python. The packages needed in the conda environment are included in the environment_3d-ecm.yml file.
