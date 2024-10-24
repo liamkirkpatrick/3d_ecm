@@ -34,7 +34,7 @@ from ECMclass import ECM
 
 # paths
 path_to_data = '../../data/'
-path_to_figures = '/Users/Liam/Desktop/UW/ECM/2024_structure/figures/orientations/'
+path_to_angles = '../../data/angles/'
 metadata_file = 'metadata.csv'
 path_to_angles = '../../data/angles'
 
@@ -42,46 +42,8 @@ path_to_angles = '../../data/angles'
 window = 10
 
 
-#%% Read in metadata and import data - ALHIC2302
-
-meta = pd.read_csv(path_to_data+metadata_file)
-
-# import each script as an ECM class item
-data = []
-cores = []
-sections = []
-faces = []
-ACorDCs = []
-max_tracks = 0
-for index,row in meta.iterrows():
-    
-    core = row['core']
-    section = row['section']
-    section_num = section.split("_")
-    face = row['face']
-    
-    #if core == 'alhic2302' and section=='51_2' and row['ACorDC']=='AC' and face=='l':
-    if core == 'alhic2302' and int(section_num[0])<54 and int(section_num[0])>0:
-        
-        face = row['face']
-        ACorDC = row['ACorDC']
-        
-        print("Reading "+core+", section "+section+'-'+face+'-'+ACorDC)
-    
-        data_item = ECM(core,section,face,ACorDC)
-        data_item.rem_ends(10)
-        data_item.smooth(window)
-        data.append(data_item)
-        
-        cores.append(core)
-        sections.append(section)
-        faces.append(face)
-        ACorDCs.append(ACorDC)
-        
-        if len(data_item.y_vec)>max_tracks:
-            max_tracks = len(data_item.y_vec)
-
-#%% define function to find unique elements in list
+#%% 
+# define function to find unique elements in list
 def unique(list1):
  
     # initialize a null list
@@ -95,7 +57,8 @@ def unique(list1):
     
     return(unique_list)
 
-#%% Make shifted array
+#%% 
+# Make shifted array
 
 def shift_depths(slopes,depth,y_vec,y_list):
     
@@ -103,7 +66,6 @@ def shift_depths(slopes,depth,y_vec,y_list):
     
     for s in slopes:
         slope_shifted = []
-        
         
         for y in y_vec:
             idx = y_list==y
@@ -113,7 +75,8 @@ def shift_depths(slopes,depth,y_vec,y_list):
         
     return(shifted_depth)
 
-#%% Find longest stretch of 0s
+#%% 
+# Find longest stretch of 0s
 
 def find_longest_zeros(button):
     max_length = 0
@@ -215,7 +178,6 @@ def interp_onto_shifted(shifted_depth,depth,slopes,meas,y_vec,y_list,interp_int,
 #%% Calculate angles
 
 def compute_dip_angles(data,sections,core):
-#if True:
 
     column_names = ['section']
     unique_sec = unique(sections)
@@ -233,10 +195,10 @@ def compute_dip_angles(data,sections,core):
               " - "+d.ACorDC)
         
         length = []
-        angle_res = 1
+        angle_res = 0.1
         angle_low = -75
         angle_high = 75
-        test_angle = np.linspace(angle_low,angle_high,int((angle_high-angle_low)*angle_res+1))
+        test_angle = np.linspace(angle_low,angle_high,int((angle_high-angle_low)/angle_res+1))
         
         # assign angles to test
         slopes = np.tan(test_angle * np.pi/180)
@@ -254,7 +216,7 @@ def compute_dip_angles(data,sections,core):
         
         # get interpolated arrays
         print("    getting interpolated arrays")
-        interp_int = 0.00025
+        interp_int = 0.001
         interp_meas,interp_depth,depth_min,depth_max = interp_onto_shifted(shifted_depth,depth,
                                                         slopes,meas,y_vec,y_list,
                                                         interp_int,button)
@@ -262,54 +224,45 @@ def compute_dip_angles(data,sections,core):
         # calc dip angle
         print("    calc dip angle")
         corr_coef=np.zeros((len(slopes),len(y_vec)**2)) * np.NaN
-        track_combos = []
+        length_array=np.zeros((len(slopes),len(y_vec)**2)) * np.NaN
         scnt = 0
         for s in slopes:
             
             interp_meas_slope = interp_meas[scnt]
             interp_depth_slope = interp_depth[scnt]
             
-            
-            for i in range(len(y_vec)):
-                for j in range(len(y_vec)):
+            for i in range(len(y_vec)-1):
+                for j in range(i+1,len(y_vec)):
                     
-                    
-                    
-                    # check we're not comparing a track with itself and 
-                    # check each track has reasonable length (>15cm) (being over 100m indicates it's a track of all button)
-                    if (i!=j 
-                        and (depth_max[i]-depth_min[i])>0.15
-                        and (depth_max[i]-depth_min[i])<2
-                        and (depth_max[j]-depth_min[j])>0.15
+                    # check each track is not crazy long (all button is 100m)
+                    if ((depth_max[i]-depth_min[i])<2
                         and (depth_max[j]-depth_min[j])<2):
                         
-                        if scnt==0:
-                            track_combos.append('Tracks '+str(i)+' and '+str(j))
+                        if scnt==0 and False:
+                            print('Tracks '+str(i)+' and '+str(j))
                         
-                        length.append(depth_max[i]-depth_min[i])
+                        #length.append(depth_max[i]-depth_min[i])
                         
                         dmin = max([depth_min[i],depth_min[j]])+0.0010001
                         dmax = min([depth_max[i],depth_max[j]])-0.0009999
+
+                        # ensure there is significant overlap
+                        if dmax-dmin>0.3:
+                            
+                            track1_idx = (interp_depth_slope[i]>=dmin)* (interp_depth_slope[i]<=dmax)
+                            track2_idx = (interp_depth_slope[j]>=dmin)* (interp_depth_slope[j]<=dmax)
+                            track1_meas = interp_meas_slope[i]
+                            track2_meas = interp_meas_slope[j]
                         
-                        k = 1
-    
-                        track1_idx = (interp_depth_slope[i]>=dmin)* (interp_depth_slope[i]<=dmax)
-                        track2_idx = (interp_depth_slope[j]>=dmin)* (interp_depth_slope[j]<=dmax)
-                        track1_meas = interp_meas_slope[i]
-                        track2_meas = interp_meas_slope[j]
-                        
-                        # track1_depth_all = interp_depth_slope[i]
-                        # track2_depth_all = interp_depth_slope[j]
-                        # track1_depth = track1_depth_all[track1_idx]
-                        # track2_depth = track2_depth_all[track2_idx]
-                        
-                        if np.isnan(np.sum(track1_meas[track1_idx])) or np.isnan(np.sum(track2_meas[track2_idx])):
-                            print('       ************* Tracks'+str(i)+' and '+str(j)+ ' includes nans **************')
-                        elif sum(track1_idx)<10 or sum(track2_idx)<10:
-                            print('       ************* No Significant Overlap ********************  ')
-                        else:
-                            result = stats.pearsonr(track1_meas[track1_idx],track2_meas[track2_idx])
-                            corr_coef[scnt,len(y_vec)*i+j] = result.statistic
+                            
+                            if np.isnan(np.sum(track1_meas[track1_idx])) or np.isnan(np.sum(track2_meas[track2_idx])):
+                                print('       ************* Tracks'+str(i)+' and '+str(j)+ ' includes nans **************')
+                            elif sum(track1_idx)<10 or sum(track2_idx)<10:
+                                print('       ************* No Significant Overlap ********************  ')
+                            else:
+                                result = stats.pearsonr(track1_meas[track1_idx],track2_meas[track2_idx])
+                                corr_coef[scnt,len(y_vec)*i+j] = result.statistic
+                                length_array[scnt,len(y_vec)*i+j] = depth_max[i]-depth_min[i]
             scnt+=1
         
             
@@ -318,25 +271,14 @@ def compute_dip_angles(data,sections,core):
         icnt = 0
         angle=[]
         score = []
+        length = []
         for i in idx:
             maxidx = np.argmax(corr_coef[:,i])
             angle.append(test_angle[maxidx])
             score.append(corr_coef[maxidx,i])
+            length.append(length_array[maxidx,i])
     
             icnt+=1
-            
-        
-        # # make a plot
-        # fig,axs = plt.subplots()
-        # axs.set_title(d.core+" - "+d.section+" - "+d.face+" - "+d.ACorDC)
-        # axs.plot(angle,score,'k*')
-        # axs.set_xlabel('Angle')
-        # axs.set_ylabel('Score')
-        # axs.set_xlim([-90,90])
-        # axs.set_ylim([0,1])
-        # fig.savefig('../../../figures/single_orientations/'
-        #             +d.core+"-"+d.section+"-"+d.face+"-"+d.ACorDC+'.png')
-    
         
         # add data to dataframe
         sec_idx = unique_sec.index(d.section)
@@ -354,26 +296,15 @@ def compute_dip_angles(data,sections,core):
         df.at[sec_idx, length_rowname] = length
         
         
-        # calculate percentage spread between 10 and 90th percentile
-        meas10 = np.percentile(d.meas[d.button==0],10)
-        meas90 = np.percentile(d.meas[d.button==0],90)
-        spread = meas90/meas10
-        df.at[sec_idx,'10-90 percentile spread'] = spread
-        
         # increment counter
         dcnt+=1
     
     df.to_pickle('../../data/angles/'+core+'_angles.df')
-    
 
-#%% Run 2302
-
-compute_dip_angles(data,sections,'alhic2302')
-
-#%% Read in metadata and import data - ALHIC2201
+#%%
+# Read in metadata and import data - ALHIC2201
 
 meta = pd.read_csv(path_to_data+metadata_file)
-
 
 # import each script as an ECM class item
 data = []
@@ -389,7 +320,48 @@ for index,row in meta.iterrows():
     section_num = section.split("_")
     face = row['face']
     
-    if core == 'alhic2201' and int(section_num[0])>10:
+    #if core == 'alhic2302' and section=='51_2' and row['ACorDC']=='AC' and face=='l':
+    #if core == 'alhic2302' and int(section_num[0])<13 and int(section_num[0])>0:
+    if core == 'alhic2302':
+        
+        face = row['face']
+        ACorDC = row['ACorDC']
+        
+        print("Reading "+core+", section "+section+'-'+face+'-'+ACorDC)
+    
+        data_item = ECM(core,section,face,ACorDC)
+        data_item.rem_ends(10)
+        data_item.smooth(window)
+        data.append(data_item)
+        
+        cores.append(core)
+        sections.append(section)
+        faces.append(face)
+        ACorDCs.append(ACorDC)
+        
+        if len(data_item.y_vec)>max_tracks:
+            max_tracks = len(data_item.y_vec)
+
+compute_dip_angles(data,sections,'alhic2302')
+
+#%% 
+# Read in metadata and import data - ALHIC2201
+
+# import each script as an ECM class item
+data = []
+cores = []
+sections = []
+faces = []
+ACorDCs = []
+max_tracks = 0
+for index,row in meta.iterrows():
+    
+    core = row['core']
+    section = row['section']
+    section_num = section.split("_")
+    face = row['face']
+    
+    if core == 'alhic2201':
         
         face = row['face']
         ACorDC = row['ACorDC']

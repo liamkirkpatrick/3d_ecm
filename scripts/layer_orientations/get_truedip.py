@@ -4,8 +4,10 @@
 Created on Sat May  4 15:52:47 2024
 
 Script to:
-    1) Calculate true dip and orientation
+    1) Calculate true dip and orientation from aparent dip and weights
     2) Make a plot
+
+* requires that master_orientation has been run first
 
 @author: Liam
 """
