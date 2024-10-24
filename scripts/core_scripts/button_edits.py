@@ -3,7 +3,7 @@
 """
 Created on Fri Apr 26 10:15:54 2024
 
-This script will allow me to alter the "button" field in proccessed allan
+This script will allow me to alter the "button" field in proccessed Allen
 Hills ECM data files.
 
 It includes a GUI for viewing the data and making adjustments
@@ -117,10 +117,10 @@ def makeplot(ymin,lmin,lmax,xmin,xmax,d_window,data,currtrack,df):
         ax[1].plot(data.meas_s[ind],data.depth_s[ind],linewidth=linewidth,color=cmap(i/len(data.y_vec)))
         
         # overlay button
-        if hasattr(data, 'button_raw'):
-            ind_ns = data.y==data.y_vec[i]
-            idx_button_raw = ind_ns * (data.button_raw==1)
-            ax[1].plot(data.meas[idx_button_raw],data.depth[idx_button_raw],'g.',markersize=linewidth*1.1)
+        #if hasattr(data, 'button_raw'):
+            #ind_ns = data.y==data.y_vec[i]
+            #idx_button_raw = ind_ns * data.button_raw==1
+            #ax[1].plot(data.meas[idx_button_raw],data.depth[idx_button_raw],'g.',markersize=linewidth*1.1)
         idx_button_s = ind * data.button_s==1
         ax[1].plot(data.meas_s[idx_button_s],data.depth_s[idx_button_s],'k.',markersize=linewidth)
         
@@ -227,22 +227,24 @@ for index,row in meta.iterrows():
     section = row['section']
     face = row['face']
     ACorDC = row['ACorDC']
+
+    parts = section.split('_')
+    if len(parts)>1:
+        tube = parts[0]
+    else:
+        tube = section
     
-    to_run = ['158']
 
-    if core == 'alhic2302':
-    #if core == 'pico2303':
+    #if core == 'alhic2302' and int(tube)>30:
+    if core == 'alhic2201':
+    
+        print("Reading "+core+", section "+section+'-'+face+'-'+ACorDC)
         
+        data_item = ECM(core,section,face,ACorDC)
         
-        if section in to_run and ACorDC == 'AC' and (face == 'r' or face == 'tr'):
-
-            print("Reading "+core+", section "+section+'-'+face+'-'+ACorDC)
-            
-            data_item = ECM(core,section,face,ACorDC)
-            
-            #if max(data_item.depth) < 47 and min(data_item.depth)>3:
-            data_item.smooth(window)
-            data.append(data_item)
+        #if max(data_item.depth) < 47 and min(data_item.depth)>3:
+        data_item.smooth(window)
+        data.append(data_item)
 
 #launch gui
 layout = make_gui()

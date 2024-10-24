@@ -32,7 +32,6 @@ class ECM:
         
         
         # assign core components
-        self.time = row['time'].values[0]
         self.y_left = row['Y_left'].values[0]
         self.y_right = row['Y_right'].values[0]
         self.core = row['core'].values[0]
