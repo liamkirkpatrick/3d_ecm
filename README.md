@@ -9,7 +9,10 @@ This repository holds a working version of scripts and data for calculation of 3
   - metadata.csv - _csv file containing metadata for all data files. This is helpful when reading in data (used in scripts)_
 - scripts/
   - basic plots/ - simple figures for ALHIC2302 and ALHIC2201
+    - alhic2201_initialplots.py - plot AC and DC ECM data from ALHIC2201
+    - alhic2302_initialplots.py - plot AC and DC ECM data from ALHIC2302
   - core_scripts/ - basic scripts used in others. Includes definition of ECM class
+    - 
   - layer_orientations - scripts to determine 3D layer orientation and plot results
   - threedim_plotting - three dimensional plots (as seen in paper)
 - README.md - this file, describes contents and use
