@@ -11,6 +11,8 @@ figures/
 
 # .DS_Store files
 .DS_Store
+data/.DS_Store
+basic_plots/.DS_Store
 
 # Distribution / packaging
 .Python

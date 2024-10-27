@@ -99,7 +99,8 @@ def plotquarter(y_vec,ycor,d,meas,button,axs,rescale):
             
     return()
 
-#%% define function to find unique elements in list
+#%% 
+# define function to find unique elements in list
 def unique(list1):
  
     # initialize a null list

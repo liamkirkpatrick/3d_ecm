@@ -122,14 +122,13 @@ def interp_onto_shifted(shifted_depth,depth,slopes,meas,y_vec,y_list,interp_int,
     interp_depth = []
     depth_min = np.ones(len(y_vec)) * 0
     depth_max = np.ones(len(y_vec)) * 2000
-    
+
     
     # loop through all tracks
     scnt = 0
     for s in slopes:
                 
         slope_shifted = shifted_depth[scnt]
-        
         
         # loop through all tracks
         interp_meas_slope = []
@@ -320,8 +319,6 @@ for index,row in meta.iterrows():
     section_num = section.split("_")
     face = row['face']
     
-    #if core == 'alhic2302' and section=='51_2' and row['ACorDC']=='AC' and face=='l':
-    #if core == 'alhic2302' and int(section_num[0])<13 and int(section_num[0])>0:
     if core == 'alhic2302':
         
         face = row['face']
