@@ -52,19 +52,26 @@ for index,row in meta.iterrows():
     
     # filter for ALHIC2201 core
     core = row['core']
+
     if core == 'alhic2201':
+
         section = row['section']
         face = row['face']
         ACorDC = row['ACorDC']
         
         print("Reading "+core+", section "+section+'-'+face+'-'+ACorDC)
         
+        # read in data item
         data_item = ECM(core,section,face,ACorDC)
+        # remove 10mm from ends - this data is often noisy
         data_item.rem_ends(10)
+        # apply smoothing at specified window
         data_item.smooth(window)
-        data_item.norm_outside
+        # normalize the outside tracks - these are often offset
+        data_item.norm_outside()
+        # add to list of core sections
         data.append(data_item)
-        
+        # add to lists of core attributes
         cores.append(core)
         sections.append(section)
         faces.append(face)

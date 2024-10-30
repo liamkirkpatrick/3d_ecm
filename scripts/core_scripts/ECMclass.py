@@ -164,7 +164,7 @@ class ECM:
     
     # normalize outside magnitude to match inner tracks
     def norm_outside(self):
-                
+
         # calculate average accross main track
         norm_idx1 = self.y>self.y_vec[0]
         norm_idx2 = self.y<self.y_vec[-1]
@@ -179,9 +179,7 @@ class ECM:
             if self.issmoothed:
                 strack_idx = self.y_s == ytrack
                 self.meas_s[strack_idx] = self.meas_s[strack_idx] * norm / track_ave
-                
-            print(norm/track_ave)
-            
+                            
     # normalize all tracks
     def norm_all(self):
         
@@ -207,8 +205,8 @@ class ECM:
 
 if __name__ == "__main__":
     
-    #test = ECM('alhic2201','10_1','t','AC')
-    test = ECM('alhic2302','159_3','t','AC')
+    test = ECM('alhic2201','10_1','t','AC')
+    #test = ECM('alhic2302','159_3','t','AC')
     
     test.smooth(1)
     
@@ -216,7 +214,7 @@ if __name__ == "__main__":
     
     test.smooth(1)
     
-    #test.norm_outside()
+    test.norm_outside()
     
     test.norm_all()
     

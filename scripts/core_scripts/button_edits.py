@@ -236,7 +236,8 @@ for index,row in meta.iterrows():
     
 
     #if core == 'alhic2302' and int(tube)>30:
-    if core == 'alhic2201':
+    if core == 'alhic2201' and section == '19_1':
+    #if core == 'alhic2201':
     
         print("Reading "+core+", section "+section+'-'+face+'-'+ACorDC)
         

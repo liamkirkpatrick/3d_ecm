@@ -64,6 +64,8 @@ for index,row in meta.iterrows():
         data_item = ECM(core,section,face,ACorDC)
         # remove last 10mm from either end
         data_item.rem_ends(10)
+        # normalize outside tracks
+        data_item.norm_outside()
         # apply smoothing (at specified window)
         data_item.smooth(window)
         #add to list
