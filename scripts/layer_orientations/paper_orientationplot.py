@@ -45,7 +45,7 @@ my_cmap = matplotlib.colormaps['Spectral']
 
 # paths
 path_to_data = '../../data/'
-path_to_figures = '/Users/Liam/Desktop/UW/ECM/2024_structure/figures/methods_paper/'
+path_to_figures = '../../../figures/paper_figures/'
 metadata_file = 'metadata.csv'
 
 # smoothing window (mm)
@@ -442,7 +442,7 @@ axs[0,1].set_yticks([])
 axs[0,1].set_xlabel('distance from center of core (mm)')
 
 #       subplot 2
-axs[1,0].set_xlabel('Conductivity')
+axs[1,0].set_xlabel('Conductivity (amps)')
 axs[1,0].set_ylabel('Depth (m)')
 axs[1,0].legend()
 
@@ -477,7 +477,7 @@ fig.lines.append(line2)
 n=0
 for ax in [axs[0,0],axs[0,1],axs[1,0],axs[1,1]]:
     
-    ax.text(0.05, 0.91, string.ascii_lowercase[n]+')', transform=ax.transAxes, 
+    ax.text(0.05, 0.91, string.ascii_lowercase[n]+' ', transform=ax.transAxes, 
             size=20, weight='bold')
     n+=1
     
@@ -490,6 +490,9 @@ ACcbar_ax = fig.add_axes([0.87,0.565,0.03,0.4])
 ACnorm = matplotlib.colors.Normalize(vmin=pltmin,vmax=pltmax)
 ACcbar = fig.colorbar(matplotlib.cm.ScalarMappable(norm=ACnorm, cmap=my_cmap),cax=ACcbar_ax,
               orientation='vertical',label='Current (amps )')
+
+# save figure
+fig.savefig(path_to_figures+'orientation_plot_v2.png',dpi=300)
 
         
 #%% Make Plot - Version 1

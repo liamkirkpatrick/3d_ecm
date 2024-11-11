@@ -39,8 +39,7 @@ window = 10
 
 # paths
 path_to_data = '../../data/'
-path_to_raw = '/Users/Liam/Desktop/UW/ECM/raw_data/'
-path_to_figures = '/Users/Liam/Desktop/UW/ECM/2024_structure/figures/three_dim/'
+path_to_figures = '../../../figures/paper_figures/'
 metadata_file = 'metadata.csv'
 
 # ONE BIG PLOT
@@ -287,7 +286,7 @@ axs.grid(False)
 
 
 
-fsz = 8
+fsz = 25
 
 # x-axis labels
 hi = int(np.round(max_depth/1000,1)*1000)
@@ -296,8 +295,8 @@ ticks = np.linspace(lo,hi,int(np.round((hi-lo)/200))+1)
 axs.set_yticks(ticks)
 #axs.set_yticks(np.round(ticks/1000,1),fontsi)
 axs.set_yticklabels(np.round(ticks/1000,1),fontsize=fsz)
-axs.tick_params(axis='y', pad=30)
-axs.set_ylabel('Depth (m)',fontsize=fsz,labelpad=110)
+axs.tick_params(axis='y', pad=70)
+axs.set_ylabel('Depth (m)',fontsize=fsz,labelpad=260)
 
 axs.set_xticks([])
 axs.set_zticks([])

@@ -31,7 +31,7 @@ window = 10
 
 # paths
 path_to_data = '../../data/'
-path_to_figures = '../../figures/basic_plots/alhic2201/'
+path_to_figures = '../../../figures/basic_plots/alhic2201/'
 metadata_file = 'metadata.csv'
 
 # make colormap
