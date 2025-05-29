@@ -45,8 +45,6 @@ from statsmodels.stats.weightstats import DescrStatsW
 def wiskerplot(d,q,axs,ACorDC):
     
 
-
-    
     h = 0.8
     linewidth=3
     

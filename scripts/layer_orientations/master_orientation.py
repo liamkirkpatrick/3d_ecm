@@ -110,12 +110,12 @@ def find_longest_zeros(button):
 
 def interp_onto_shifted(shifted_depth,depth,slopes,meas,y_vec,y_list,interp_int,button):
     
-    # make evenly spaced grid
-    grid_min = math.ceil(min(depth)*100)/100
-    grid_max = math.floor(max(depth)*100)/100
-    grid = np.linspace(grid_min,
-            grid_min + math.floor((grid_max-grid_min)/interp_int)*interp_int,
-            math.floor((grid_max-grid_min)/interp_int)+1)
+    # # make evenly spaced grid
+    # grid_min = math.ceil(min(depth)*100)/100
+    # grid_max = math.floor(max(depth)*100)/100
+    # grid = np.linspace(grid_min,
+    #         grid_min + math.floor((grid_max-grid_min)/interp_int)*interp_int,
+    #         math.floor((grid_max-grid_min)/interp_int)+1)
     
     
     interp_meas = []
@@ -219,11 +219,13 @@ def compute_dip_angles(data,sections,core):
         interp_meas,interp_depth,depth_min,depth_max = interp_onto_shifted(shifted_depth,depth,
                                                         slopes,meas,y_vec,y_list,
                                                         interp_int,button)
+
         
         # calc dip angle
         print("    calc dip angle")
         corr_coef=np.zeros((len(slopes),len(y_vec)**2)) * np.NaN
         length_array=np.zeros((len(slopes),len(y_vec)**2)) * np.NaN
+
         scnt = 0
         for s in slopes:
             
@@ -237,16 +239,24 @@ def compute_dip_angles(data,sections,core):
                     if ((depth_max[i]-depth_min[i])<2
                         and (depth_max[j]-depth_min[j])<2):
                         
-                        if scnt==0 and False:
-                            print('Tracks '+str(i)+' and '+str(j))
-                        
+
+
                         #length.append(depth_max[i]-depth_min[i])
                         
                         dmin = max([depth_min[i],depth_min[j]])+0.0010001
                         dmax = min([depth_max[i],depth_max[j]])-0.0009999
 
+                        if (scnt==0 or scnt==1) and False:
+                            print('        Tracks '+str(i)+' and '+str(j))
+                            print('            dmin = '+str(dmin))
+                            #print('            depth_min[i] = '+str(depth_min[i]))
+                            #print('            depth_min[j] = '+str(depth_min[j]))
+                            print('            dmax = '+str(dmax))
+                            #print('            depth_max[i] = '+str(depth_max[i]))
+                            #print('            depth_max[j] = '+str(depth_max[j]))
+
                         # ensure there is significant overlap
-                        if dmax-dmin>0.3:
+                        if dmax-dmin>0.4:
                             
                             track1_idx = (interp_depth_slope[i]>=dmin)* (interp_depth_slope[i]<=dmax)
                             track2_idx = (interp_depth_slope[j]>=dmin)* (interp_depth_slope[j]<=dmax)
@@ -261,7 +271,7 @@ def compute_dip_angles(data,sections,core):
                             else:
                                 result = stats.pearsonr(track1_meas[track1_idx],track2_meas[track2_idx])
                                 corr_coef[scnt,len(y_vec)*i+j] = result.statistic
-                                length_array[scnt,len(y_vec)*i+j] = depth_max[i]-depth_min[i]
+                                length_array[scnt,len(y_vec)*i+j] = dmax - dmin #depth_max[i]-depth_min[i]
             scnt+=1
         
             

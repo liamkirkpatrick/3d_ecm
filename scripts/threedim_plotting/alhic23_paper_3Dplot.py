@@ -338,3 +338,22 @@ fig.savefig(figfile,
         transparent = False,  
         facecolor = 'white'
             )
+
+# Create a separate figure for the colorbar
+fig_colorbar, ax_colorbar = plt.subplots(figsize=(10, 2), dpi=200)
+
+# Create a colorbar based on the colormap used in the main plot
+norm = matplotlib.colors.Normalize(vmin=ACpltmin, vmax=ACpltmax)
+cbar = fig_colorbar.colorbar(matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), cax=ax_colorbar, orientation='horizontal')
+
+# Set colorbar label
+cbar.set_label('Current (amps)', fontsize=20)
+
+# Adjust margins to prevent clipping
+fig_colorbar.subplots_adjust(bottom=0.3, top=0.7)
+
+# Save the colorbar figure
+colorbar_file = path_to_figures + 'alhic2302_colorbar.png'
+fig_colorbar.savefig(colorbar_file, transparent=False, facecolor='white')
+
+# %%

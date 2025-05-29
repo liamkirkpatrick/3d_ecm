@@ -364,8 +364,8 @@ for y in d.y_vec:
     ycnt+=1
 b_t = 16.4
 b_b = 16.65
-b_l = 1.9e-8
-b_r = 2.8e-8
+b_l = 1.9e-8 / 2
+b_r = 2.8e-8 / 2
 axs[0,0].plot([b_l,b_l,b_r,b_r,b_l],[b_b,b_t,b_t,b_b,b_b],'k')
 axs[0,0].set_ylim([np.max(d.depth),np.min(d.depth)])
 
@@ -430,7 +430,7 @@ axs[1,1].plot([max_angle,max_angle],[0,1],'r:',label='_nolegend_')
 # figure settup
 
 #       subplot 0
-axs[0,0].set_xlabel('Conductivity (amps)')
+axs[0,0].set_xlabel('Current (amps)')
 axs[0,0].set_ylabel('Depth (m)')
 axs[0,0].legend(loc='upper right')
 
@@ -439,10 +439,10 @@ axs[0,0].legend(loc='upper right')
 #axs[0,1].yaxis.set_label_position("right")
 axs[0,1].set_yticks([])
 #axs[0,1].set_ylabel('depth')
-axs[0,1].set_xlabel('distance from center of core (mm)')
+axs[0,1].set_xlabel('Distance from Center of Core (mm)')
 
 #       subplot 2
-axs[1,0].set_xlabel('Conductivity (amps)')
+axs[1,0].set_xlabel('Current (amps)')
 axs[1,0].set_ylabel('Depth (m)')
 axs[1,0].legend()
 
