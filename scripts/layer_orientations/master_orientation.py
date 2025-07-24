@@ -256,7 +256,7 @@ def compute_dip_angles(data,sections,core):
                             #print('            depth_max[j] = '+str(depth_max[j]))
 
                         # ensure there is significant overlap
-                        if dmax-dmin>0.4:
+                        if dmax-dmin>0.3:
                             
                             track1_idx = (interp_depth_slope[i]>=dmin)* (interp_depth_slope[i]<=dmax)
                             track2_idx = (interp_depth_slope[j]>=dmin)* (interp_depth_slope[j]<=dmax)
