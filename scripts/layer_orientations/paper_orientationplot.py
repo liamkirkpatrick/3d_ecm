@@ -350,7 +350,7 @@ pair_angle = test_angle[pair_angle_idx]
 
 #%% Make Plot - version 2
 
-fig,axs = plt.subplots(2,2,figsize=(8,8),dpi=300)
+fig,axs = plt.subplots(2,2,figsize=(7.4,8),dpi=300)
 #fig,axs = plt.subplots(1,2,figsize=(10,25))
 #fig.suptitle('Demo Plot')
 
@@ -492,7 +492,7 @@ ACcbar = fig.colorbar(matplotlib.cm.ScalarMappable(norm=ACnorm, cmap=my_cmap),ca
               orientation='vertical',label='Current (amps )')
 
 # save figure
-fig.savefig(path_to_figures+'orientation_plot_v2.png',dpi=300)
+fig.savefig(path_to_figures+'orientation_plot_v2.png',bbox_inches='tight',dpi=300)
 
         
 #%% Make Plot - Version 1
