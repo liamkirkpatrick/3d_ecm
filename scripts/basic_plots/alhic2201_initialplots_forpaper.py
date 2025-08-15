@@ -174,6 +174,8 @@ for sec in unique(sections):
     DCrescale = lambda k: (k-DCpltmin) /  (DCpltmax-DCpltmin)
     dmin = min(minvec)
     dmax = max(maxvec)
+
+    #%%
        
     # make figure
     fig, ax = plt.subplots(1, 5, gridspec_kw={'width_ratios': [2, 3,2.4, 2, 3]},figsize=(7,6),dpi=300)
@@ -191,8 +193,11 @@ for sec in unique(sections):
         
     # applies to all
     for a in [ax[0],ax[1],ax[3],ax[4]]:
-        a.set_xlabel('Distance From Center (mm)',fontsize=6)
         a.set_ylim([dmax, dmin])
+
+    # make a shared x-axis label for plots [0,1] and [3,4]
+    ax[0].set_xlabel('                                                   Distance From Center (mm)',fontsize=6)
+    ax[3].set_xlabel('                                                   Distance From Center (mm)',fontsize=6)
 
     # applies to all except ax[1]
     for a in [ax[0],ax[3],ax[4]]:
@@ -253,7 +258,8 @@ for sec in unique(sections):
     DCcbar = fig.colorbar(matplotlib.cm.ScalarMappable(norm=DCnorm, cmap=my_cmap),cax=DCcbar_ax,
                     orientation='horizontal',label='Current (amps)')
     
-path_to_final_fig = '../../../final_submission/'
-fig.savefig(path_to_final_fig+'JOG-2024-0148.Figure6.png', dpi=300)
+path_to_final_fig = '../../../final_submission_try2/'
+fig.savefig(path_to_final_fig+'JOG-2024-0148.Figure6.pdf', dpi=300)
+fig.savefig(path_to_final_fig+'png/'+'JOG-2024-0148.Figure6.png', dpi=300)
     
 # %%

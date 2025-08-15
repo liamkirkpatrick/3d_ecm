@@ -340,14 +340,15 @@ fig.savefig(figfile,
             )
 
 # Create a separate figure for the colorbar
-fig_colorbar, ax_colorbar = plt.subplots(figsize=(10, 2), dpi=200)
+fig_colorbar, ax_colorbar = plt.subplots(figsize=(3, 2), dpi=200)
 
 # Create a colorbar based on the colormap used in the main plot
 norm = matplotlib.colors.Normalize(vmin=ACpltmin, vmax=ACpltmax)
 cbar = fig_colorbar.colorbar(matplotlib.cm.ScalarMappable(norm=norm, cmap=cmap), cax=ax_colorbar, orientation='horizontal')
+cbar.ax.tick_params(labelsize=15)  # Increase the fontsize of the colorbar axis labels
 
 # Set colorbar label
-cbar.set_label('Current (amps)', fontsize=20)
+cbar.set_label('Current (amps)', fontsize=25)
 
 # Adjust margins to prevent clipping
 fig_colorbar.subplots_adjust(bottom=0.3, top=0.7)

@@ -350,7 +350,7 @@ pair_angle = test_angle[pair_angle_idx]
 
 #%% Make Plot - version 2
 
-fig,axs = plt.subplots(2,2,figsize=(7.4,8),dpi=300)
+fig,axs = plt.subplots(2,2,figsize=(7,8),dpi=300)
 #fig,axs = plt.subplots(1,2,figsize=(10,25))
 #fig.suptitle('Demo Plot')
 
@@ -409,14 +409,14 @@ idx = d.y_s == d.y_vec[-1]
 axs[1,0].plot(d.meas_s[idx],d.depth_s[idx]+shift_6,label="Track "+str(len(d.y_vec))+" shifted",color=cmap(1.0),linestyle='dashed')
     
 # subplot 3 - make plot
-axs[1,1].plot(test_angle,corr_coef[:,5],'r-',label = 'Tracks 1 and 6 - as in c)')
+axs[1,1].plot(test_angle,corr_coef[:,5],'r-',label = 'Tracks 1 & 6 - as in c)')
 max_angle = test_angle[corr_coef[:,5]==max(corr_coef[:,5])]
-axs[1,1].plot([max_angle,max_angle],[0,1],'r:',label='Angle Pick for Tracks 1 and 6')
+axs[1,1].plot([max_angle,max_angle],[0,1],'r:',label='Angle Pick - Tracks 1 & 6')
 for i in idx_corr:
     if i == idx_corr[0]:
         axs[1,1].plot(test_angle,corr_coef[:,i],'k-',label='All Other Track Pairs')
         max_angle = test_angle[corr_coef[:,i]==max(corr_coef[:,i])]
-        axs[1,1].plot([max_angle,max_angle],[0,1],'k:',label='Angle Pick for Other Pairs')
+        axs[1,1].plot([max_angle,max_angle],[0,1],'k:',label='Angle Pick - Other Pairs')
     else:
         axs[1,1].plot(test_angle,corr_coef[:,i],'k-',label='_nolegend_')
         max_angle = test_angle[corr_coef[:,i]==max(corr_coef[:,i])]
@@ -493,6 +493,11 @@ ACcbar = fig.colorbar(matplotlib.cm.ScalarMappable(norm=ACnorm, cmap=my_cmap),ca
 
 # save figure
 fig.savefig(path_to_figures+'orientation_plot_v2.png',bbox_inches='tight',dpi=300)
+
+# save final figure
+path_to_final_fig = '../../../final_submission_try2/'
+fig.savefig(path_to_final_fig+'JOG-2024-0148.Figure4.pdf', dpi=300)
+fig.savefig(path_to_final_fig+'png/'+'JOG-2024-0148.Figure4.png', dpi=300)
 
         
 #%% Make Plot - Version 1
